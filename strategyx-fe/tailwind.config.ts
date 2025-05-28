@@ -44,11 +44,6 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        fontFamily: {
-          sans: ["var(--font-sans)"],
-          serif: ["var(--font-serif)"],
-          mono: ["var(--font-mono)"],
-        },
         borderRadius: {
           lg: "var(--radius)",
           md: "calc(var(--radius) - 2px)",
@@ -81,6 +76,11 @@ const config: Config = {
           border: "var(--color-sidebar-border)",
           ring: "var(--color-sidebar-ring)",
         },
+      },
+      fontFamily: {
+        sans: ["var(--font-sans)"],
+        serif: ["var(--font-serif)"],
+        mono: ["var(--font-mono)"],
       },
     },
   },
