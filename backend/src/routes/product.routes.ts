@@ -31,6 +31,7 @@ router.put(
   validationMiddleware(UpdateProductDto, true),
   productController.updateProduct,
 );
+router.get("/categories", productController.getCategories);
 router.delete("/:id", productController.deleteProduct);
 
 export { router as productRoutes };

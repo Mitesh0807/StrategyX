@@ -44,7 +44,7 @@ export function queryValidationMiddleware<T extends object>(
 
           return ResponseUtil.error(res, message, 400);
         } else {
-          req.query = dto as any;
+          Object.assign(req.query, dto);
           next();
         }
       },

@@ -7,6 +7,7 @@ import {
 } from "@/dto/product.dto";
 import { BaseService } from "./base.service";
 import { FindManyOptions, Like, Between } from "typeorm";
+import { logger } from "@/utils/logger.util";
 
 export interface PaginatedResult<T> {
   items: T[];
@@ -54,10 +55,6 @@ export class ProductService extends BaseService<Product> {
 
     const where: any = {};
 
-    if (userId) {
-      where.userId = userId;
-    }
-
     if (productId) {
       where.productId = Like(`%${productId}%`);
     }
@@ -87,6 +84,7 @@ export class ProductService extends BaseService<Product> {
     };
 
     const [items, total] = await this.repository.findAndCount(options);
+    logger.warn(JSON.stringify(items, null, 2));
     const totalPages = Math.ceil(total / limit);
 
     return {
@@ -134,5 +132,11 @@ export class ProductService extends BaseService<Product> {
       .getRawMany();
 
     return result.map((item) => item.category);
+  }
+  async findExistingProduct(
+    name: string,
+    userId: number,
+  ): Promise<Product | null> {
+    return this.repository.findOneBy({ name, userId });
   }
 }

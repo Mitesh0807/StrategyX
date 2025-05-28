@@ -27,6 +27,10 @@ app.use(
   }),
 );
 
+app.use((req, _res, next) => {
+  logger.info(`[${req.method}] ${req.originalUrl}`);
+  next();
+});
 app.use(generalLimiter);
 
 app.use(express.json({ limit: "10mb" }));

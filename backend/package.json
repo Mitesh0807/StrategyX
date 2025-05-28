@@ -13,7 +13,8 @@
     "migration:revert": "npm run typeorm -- migration:revert -d src/config/database.ts",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
-    "format": "prettier --write src/**/*.ts"
+    "format": "prettier --write src/**/*.ts",
+    "seed": "ts-node -r tsconfig-paths/register src/seed.ts"
   },
   "keywords": [],
   "author": "",

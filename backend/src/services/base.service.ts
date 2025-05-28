@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 
 export abstract class BaseService<T extends { id: number } & ObjectLiteral> {
-  constructor(protected repository: Repository<T>) {}
+  constructor(public repository: Repository<T>) {}
 
   async findAll(options?: FindManyOptions<T>): Promise<T[]> {
     return this.repository.find(options);
@@ -37,5 +37,9 @@ export abstract class BaseService<T extends { id: number } & ObjectLiteral> {
 
   async count(where?: FindOptionsWhere<T>): Promise<number> {
     return this.repository.count({ where });
+  }
+
+  protected getRepo(): Repository<T> {
+    return this.repository;
   }
 }

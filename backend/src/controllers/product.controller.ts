@@ -17,19 +17,18 @@ export class ProductController extends BaseController {
         req.user?.id,
       );
 
-      this.handleSuccess(
-        res,
-        result.items,
-        "Products retrieved successfully",
-        200,
-      );
-
       res.set({
         "X-Total-Count": result.total.toString(),
         "X-Total-Pages": result.totalPages.toString(),
         "X-Current-Page": result.page.toString(),
         "X-Per-Page": result.limit.toString(),
       });
+      this.handleSuccess(
+        res,
+        result.items,
+        "Products retrieved successfully",
+        200,
+      );
     } catch (error) {
       this.handleError(res, error, "Failed to retrieve products");
     }
