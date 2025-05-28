@@ -32,7 +32,7 @@ const rawEnv = cleanEnv(process.env, {
 
   RATE_LIMIT_WINDOW_MS: num({ default: 900000 }),
   RATE_LIMIT_MAX_REQUESTS: num({ default: 100 }),
-  AUTH_RATE_LIMIT_MAX: num({ default: 5 }),
+  AUTH_RATE_LIMIT_MAX: num({ default: 20 }),
 
   LOG_LEVEL: str({ default: "info" }),
   LOG_FILE: str({ default: "logs/app.log" }),

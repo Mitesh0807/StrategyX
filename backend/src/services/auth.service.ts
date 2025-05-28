@@ -49,10 +49,10 @@ export class AuthService extends BaseService<User> {
 
     const user = this.repository.create({
       email,
-      password,
       firstName,
       lastName,
     });
+    user.setPassword(password);
 
     const savedUser = await this.repository.save(user);
     const tokens = this.generateTokens(savedUser);
