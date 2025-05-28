@@ -31,7 +31,6 @@ export class AuthService extends BaseService<User> {
 
     const tokens = this.generateTokens(user);
 
-    // Update last login
     user.lastLogin = new Date();
     await this.repository.save(user);
 

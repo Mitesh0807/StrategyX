@@ -43,14 +43,20 @@ export class User {
   @UpdateDateColumn({ name: "updated_at" })
   updatedAt: Date;
 
+  private isPasswordPlain: boolean = false;
+
+  setPassword(rawPassword: string) {
+    this.password = rawPassword;
+    this.isPasswordPlain = true;
+  }
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {
-    if (this.password) {
+    if (this.isPasswordPlain) {
       this.password = await bcrypt.hash(this.password, 12);
+      this.isPasswordPlain = false;
     }
   }
-
   async comparePassword(candidatePassword: string): Promise<boolean> {
     return bcrypt.compare(candidatePassword, this.password);
   }
