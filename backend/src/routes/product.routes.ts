@@ -10,6 +10,7 @@ import {
   UpdateProductDto,
   ProductQueryDto,
 } from "@/dto/product.dto";
+import upload from "@/config/multer.config";
 
 const router = Router();
 const productController = new ProductController();
@@ -23,11 +24,13 @@ router.get(
 );
 router.post(
   "/",
+  upload.single("image"),
   validationMiddleware(CreateProductDto),
   productController.createProduct,
 );
 router.put(
   "/:id",
+  upload.single("image"),
   validationMiddleware(UpdateProductDto, true),
   productController.updateProduct,
 );

@@ -38,8 +38,12 @@ export class ProductController extends BaseController {
 
   createProduct = async (req: Request, res: Response): Promise<void> => {
     try {
+      const createProductDto = req.body;
+      const imageUrl = req.file
+        ? `/uploads/product-images/${req.file.filename}`
+        : undefined;
       const product = await this.productService.createProduct(
-        req.body,
+        { ...createProductDto, image: imageUrl },
         req.user!.id,
       );
       this.handleSuccess(res, product, "Product created successfully", 201);
@@ -51,10 +55,16 @@ export class ProductController extends BaseController {
   updateProduct = async (req: Request, res: Response): Promise<void> => {
     try {
       const id = parseInt(req.params.id);
+      const updateProductDto = req.body;
+      const userId = req.user!.id;
+      const imageUrl = req.file
+        ? `/uploads/product-images/${req.file.filename}`
+        : undefined;
+
       const product = await this.productService.updateProduct(
         id,
-        req.body,
-        req.user!.id,
+        { ...updateProductDto, image: imageUrl },
+        userId,
       );
       this.handleSuccess(res, product, "Product updated successfully");
     } catch (error) {

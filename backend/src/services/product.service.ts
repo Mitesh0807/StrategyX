@@ -84,7 +84,6 @@ export class ProductService extends BaseService<Product> {
     };
 
     const [items, total] = await this.repository.findAndCount(options);
-    logger.warn(JSON.stringify(items, null, 2));
     const totalPages = Math.ceil(total / limit);
 
     return {

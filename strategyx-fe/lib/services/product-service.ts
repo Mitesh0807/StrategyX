@@ -1,3 +1,4 @@
+// lib/services/product.service.ts
 import { API_ENDPOINTS } from "@/lib/constants";
 import type {
   ApiResponse,
@@ -39,11 +40,37 @@ export class ProductService {
   }
 
   async createProduct(data: CreateProductData): Promise<ApiResponse<Product>> {
-    return apiClient.post<Product>(API_ENDPOINTS.PRODUCTS.BASE, data);
+    const formData = new FormData();
+
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("category", data.category);
+    formData.append("price", data.price.toString());
+    formData.append("quantity", data.quantity.toString());
+    if (data.image) {
+      formData.append("image", data.image);
+    }
+
+    // Use apiClient's post method with FormData
+    return apiClient.post<Product>(API_ENDPOINTS.PRODUCTS.BASE, formData);
   }
 
   async updateProduct(data: UpdateProductData): Promise<ApiResponse<Product>> {
-    return apiClient.put<Product>(API_ENDPOINTS.PRODUCTS.BY_ID(data.id), data);
+    const formData = new FormData();
+
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("category", data.category);
+    formData.append("price", data.price.toString());
+    formData.append("quantity", data.quantity.toString());
+    if (data.image) {
+      formData.append("image", data.image);
+    }
+
+    return apiClient.put<Product>(
+      API_ENDPOINTS.PRODUCTS.BY_ID(data.id),
+      formData,
+    );
   }
 
   async deleteProduct(id: number): Promise<ApiResponse<void>> {

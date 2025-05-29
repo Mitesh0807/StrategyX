@@ -33,6 +33,7 @@ interface SerializedProduct {
   userId: number;
   createdAt: string;
   updatedAt: string;
+  imageUrl?: string;
 }
 
 interface ProductFormDialogProps {
@@ -55,6 +56,7 @@ export function ProductFormDialog({
 
   const [isAddingCustomCategory, setIsAddingCustomCategory] = useState(false);
   const [customCategory, setCustomCategory] = useState("");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const {
     register,
@@ -83,6 +85,7 @@ export function ProductFormDialog({
           price: product.price.toString(),
           quantity: product.quantity.toString(),
         });
+        setSelectedImage(null);
       } else {
         reset({
           name: "",
@@ -91,6 +94,7 @@ export function ProductFormDialog({
           price: "",
           quantity: "",
         });
+        setSelectedImage(null);
       }
 
       setIsAddingCustomCategory(false);
@@ -102,19 +106,33 @@ export function ProductFormDialog({
     productFormSchema.parse(data);
 
     try {
-      const validatedData = productFormSchema.parse(data);
+      const formData = new FormData();
+
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("category", data.category);
+      formData.append("quantity", data.quantity.toString());
+
+      formData.append("price", data.price.toString());
+      if (selectedImage) {
+        formData.append("image", selectedImage);
+      }
 
       if (product) {
         await updateProductMutation.mutateAsync({
-          ...validatedData,
+          ...data,
           id: product.id,
+          image: selectedImage,
         });
         toast({
           title: "Success",
           description: "Product updated successfully",
         });
       } else {
-        await createProductMutation.mutateAsync(validatedData);
+        await createProductMutation.mutateAsync({
+          ...data,
+          image: selectedImage,
+        });
         toast({
           title: "Success",
           description: "Product created successfully",
@@ -305,6 +323,37 @@ export function ProductFormDialog({
               </p>
             )}
           </div>
+        </div>
+
+        <div>
+          <Label htmlFor="image">Product Image</Label>
+          <Input
+            id="image"
+            type="file"
+            accept="image/*"
+            onChange={(e) =>
+              setSelectedImage(e.target.files ? e.target.files[0] : null)
+            }
+            className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+          />
+          {product?.imageUrl && !selectedImage && (
+            <p className="text-sm text-gray-500 mt-1">
+              Current image:{" "}
+              <a
+                href={product.imageUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                View Image
+              </a>
+            </p>
+          )}
+          {selectedImage && (
+            <p className="text-sm text-gray-500 mt-1">
+              Selected file: {selectedImage.name}
+            </p>
+          )}
         </div>
 
         <div className="flex justify-end gap-2 pt-4">

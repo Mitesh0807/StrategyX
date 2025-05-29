@@ -41,3 +41,9 @@ export const PRODUCT_STATUS = {
   IN_STOCK: "In Stock",
   OUT_OF_STOCK: "Out of Stock",
 } as const;
+
+export const BACKEND_BASE_API =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
+
+export const ASSERT_BASE_URI =
+  process.env.NEXT_PUBLIC_ASSERT_URL || "http://localhost:3001";

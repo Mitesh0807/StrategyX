@@ -1,13 +1,13 @@
 "use client";
-
 import { Edit, Plus, Search, Trash2 } from "lucide-react";
+import Image from "next/image";
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SimpleSelect } from "@/components/ui/simple-select";
-import { PAGINATION } from "@/lib/constants";
+import { ASSERT_BASE_URI, PAGINATION } from "@/lib/constants";
 import { useDeleteProduct } from "@/lib/hooks/use-products";
 import { useToast } from "@/lib/hooks/use-toast";
 import {
@@ -334,11 +334,12 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
                     <tr key={product.id} className="hover:bg-gray-50">
                       <td className="px-4 py-3 w-28 align-top">
                         {product.image ? (
-                          //TODO:fix image use next js
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={product.image}
+                          <Image
+                            src={`${ASSERT_BASE_URI}${product.image}`}
                             alt={product.name}
+                            width={20}
+                            height={20}
+                            quality={80}
                             className="h-16 w-16 object-cover rounded border"
                             onError={(e) => {
                               (e.target as HTMLImageElement).style.display =
@@ -454,11 +455,14 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() =>
+                onClick={() => {
                   setFilters({
-                    page: Math.min(products.totalPages, products.page + 1),
-                  })
-                }
+                    page: Math.min(
+                      Number(products.totalPages),
+                      Number(products.page) + 1,
+                    ),
+                  });
+                }}
                 disabled={products.page >= products.totalPages}
               >
                 Next

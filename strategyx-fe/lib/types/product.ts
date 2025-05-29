@@ -26,8 +26,8 @@ export interface CreateProductData {
   name: string;
   description: string;
   category: string;
-  price: number;
-  quantity: number;
+  price: number | string;
+  quantity: number | string;
   image?: File | null;
 }
 

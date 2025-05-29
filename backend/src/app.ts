@@ -1,12 +1,14 @@
 import "reflect-metadata";
 import express from "express";
-import { Router } from "express";
+import path from "path";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 
+import fs from "fs";
+const uploadDir = path.join(__dirname, "../uploads/product-images");
 import { env } from "@/config/env";
 import { apiRoutes } from "@/routes";
 import { generalLimiter } from "@/middleware/rateLimiting.middleware";
@@ -27,6 +29,15 @@ app.use(
   }),
 );
 
+try {
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+    console.log(`Created upload directory: ${uploadDir}`);
+  }
+} catch (err) {
+  console.error("Error creating upload directory:", err);
+}
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use((req, _res, next) => {
   logger.info(`[${req.method}] ${req.originalUrl}`);
   next();
