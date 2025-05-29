@@ -39,18 +39,11 @@ export class ProductService {
   }
 
   async createProduct(data: CreateProductData): Promise<ApiResponse<Product>> {
-    const formData = this.createFormData(data);
-
-    return apiClient.post<Product>(API_ENDPOINTS.PRODUCTS.BASE, formData);
+    return apiClient.post<Product>(API_ENDPOINTS.PRODUCTS.BASE, data);
   }
 
   async updateProduct(data: UpdateProductData): Promise<ApiResponse<Product>> {
-    const formData = this.createFormData(data);
-
-    return apiClient.put<Product>(
-      API_ENDPOINTS.PRODUCTS.BY_ID(data.id),
-      formData,
-    );
+    return apiClient.put<Product>(API_ENDPOINTS.PRODUCTS.BY_ID(data.id), data);
   }
 
   async deleteProduct(id: number): Promise<ApiResponse<void>> {
@@ -59,24 +52,6 @@ export class ProductService {
 
   async getCategories(): Promise<ApiResponse<string[]>> {
     return apiClient.get<string[]>(API_ENDPOINTS.CATEGORIES);
-  }
-
-  private createFormData(
-    data: CreateProductData | UpdateProductData,
-  ): FormData {
-    const formData = new FormData();
-
-    formData.append("name", data.name);
-    formData.append("description", data.description);
-    formData.append("category", data.category);
-    formData.append("price", data.price.toString());
-    formData.append("quantity", data.quantity.toString());
-
-    if (data.image) {
-      formData.append("image", data.image);
-    }
-
-    return formData;
   }
 }
 
