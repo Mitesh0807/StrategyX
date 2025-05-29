@@ -1,13 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/lib/constants";
 import { Package, Users, BarChart3, Shield } from "lucide-react";
 import Link from "next/link";
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
       <section className="py-20 px-4">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
@@ -19,18 +19,21 @@ export default function LandingPage() {
             system. Track, manage, and optimize your products with ease.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="text-lg px-8"></Button>
+            <Button asChild size="lg" className="text-lg px-8">
+              <Link href={ROUTES.LOGIN}>Get Started</Link>
+            </Button>
             <Button
               asChild
               variant="outline"
               size="lg"
               className="text-lg px-8"
-            ></Button>
+            >
+              <Link href={ROUTES.SIGNUP}>Create Account</Link>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="py-20 px-4 bg-muted/50">
         <div className="container mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">
