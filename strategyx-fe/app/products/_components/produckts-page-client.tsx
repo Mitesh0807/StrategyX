@@ -95,8 +95,8 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
 
   const clearFilters = () => {
     setFilters({
-      page: 1,
-      limit: 10,
+      page: PAGINATION.DEFAULT_PAGE,
+      limit: PAGINATION.DEFAULT_LIMIT,
       productId: "",
       name: "",
       category: "",
@@ -105,6 +105,14 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
       maxPrice: "",
     });
   };
+
+  const isAnyFilterActive =
+    filters.productId !== "" ||
+    filters.name !== "" ||
+    filters.category !== "" ||
+    filters.status !== "" ||
+    filters.minPrice !== "" ||
+    filters.maxPrice !== "";
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -120,7 +128,10 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
               <Plus className="h-4 w-4" />
               Add Product
             </Button>
-            <Button variant="outline" onClick={clearFilters}>
+            <Button
+              variant={isAnyFilterActive ? "secondary" : "outline"}
+              onClick={clearFilters}
+            >
               Clear Filters
             </Button>
           </div>
@@ -130,15 +141,21 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
         </div>
 
         <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
             <div>
               <label
                 htmlFor="product-id"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className={`block text-sm font-medium mb-1 ${
+                  filters.productId ? "text-blue-600" : "text-gray-700"
+                }`}
               >
-                Product ID
+                Product ID{" "}
+                {filters.productId && (
+                  <span className="ml-1 text-xs text-blue-500">(Filled)</span>
+                )}
               </label>
               <Input
+                id="product-id"
                 placeholder="Filter by ID..."
                 value={filters.productId}
                 onChange={(e) =>
@@ -146,25 +163,38 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
                 }
               />
             </div>
+
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className={`block text-sm font-medium mb-1 ${
+                  filters.name ? "text-blue-600" : "text-gray-700"
+                }`}
               >
-                Name
+                Name{" "}
+                {filters.name && (
+                  <span className="ml-1 text-xs text-blue-500">(Filled)</span>
+                )}
               </label>
               <Input
+                id="name"
                 placeholder="Filter by name..."
                 value={filters.name}
                 onChange={(e) => setFilters({ name: e.target.value, page: 1 })}
               />
             </div>
+
             <div>
               <label
                 htmlFor="category"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className={`block text-sm font-medium mb-1 ${
+                  filters.category ? "text-blue-600" : "text-gray-700"
+                }`}
               >
-                Category
+                Category{" "}
+                {filters.category && (
+                  <span className="ml-1 text-xs text-blue-500">(Selected)</span>
+                )}
               </label>
               <SimpleSelect
                 value={filters.category}
@@ -173,14 +203,21 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
                 }
                 placeholder="All categories"
                 options={categoryOptions}
+                className={filters.category ? "border-blue-500" : ""}
               />
             </div>
+
             <div>
               <label
                 htmlFor="status"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className={`block text-sm font-medium mb-1 ${
+                  filters.status ? "text-blue-600" : "text-gray-700"
+                }`}
               >
-                Status
+                Status{" "}
+                {filters.status && (
+                  <span className="ml-1 text-xs text-blue-500">(Selected)</span>
+                )}
               </label>
               <SimpleSelect
                 value={filters.status}
@@ -189,16 +226,24 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
                 }
                 placeholder="All status"
                 options={statusOptions}
+                className={filters.status ? "border-blue-500" : ""}
               />
             </div>
+
             <div>
               <label
                 htmlFor="min-price"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className={`block text-sm font-medium mb-1 ${
+                  filters.minPrice ? "text-blue-600" : "text-gray-700"
+                }`}
               >
-                Min Price
+                Min Price{" "}
+                {filters.minPrice && (
+                  <span className="ml-1 text-xs text-blue-500">(Set)</span>
+                )}
               </label>
               <Input
+                id="min-price"
                 type="number"
                 placeholder="Min price..."
                 value={filters.minPrice}
@@ -209,14 +254,21 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
                 step="0.01"
               />
             </div>
+
             <div>
               <label
                 htmlFor="max-price"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className={`block text-sm font-medium mb-1 ${
+                  filters.maxPrice ? "text-blue-600" : "text-gray-700"
+                }`}
               >
-                Max Price
+                Max Price{" "}
+                {filters.maxPrice && (
+                  <span className="ml-1 text-xs text-blue-500">(Set)</span>
+                )}
               </label>
               <Input
+                id="max-price"
                 type="number"
                 placeholder="Max price..."
                 value={filters.maxPrice}
@@ -245,9 +297,12 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[1000px]">
+              <table className="w-full min-w-[1150px]">
                 <thead className="bg-gray-50 border-b">
                   <tr>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 w-28">
+                      Image
+                    </th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 w-24">
                       ID
                     </th>
@@ -277,17 +332,36 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
                 <tbody className="divide-y divide-gray-200">
                   {products?.items?.map((product) => (
                     <tr key={product.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 text-sm font-mono text-gray-900 w-24">
+                      <td className="px-4 py-3 w-28 align-top">
+                        {product.image ? (
+                          //TODO:fix image use next js
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className="h-16 w-16 object-cover rounded border"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display =
+                                "none";
+                            }}
+                          />
+                        ) : (
+                          <span className="text-xs text-gray-500">
+                            No image
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-sm font-mono text-gray-900 w-24 align-top">
                         <div className="truncate" title={product.productId}>
                           {product.productId}
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-sm font-medium text-gray-900 w-32">
+                      <td className="px-4 py-3 text-sm font-medium text-gray-900 w-32 align-top">
                         <div className="truncate" title={product.name}>
                           {product.name}
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-600 w-80">
+                      <td className="px-4 py-3 text-sm text-gray-600 w-80 align-top">
                         <div
                           className="break-words overflow-hidden"
                           style={{
@@ -304,20 +378,20 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
                           {product.description}
                         </div>
                       </td>
-                      <td className="px-4 py-3 w-24">
+                      <td className="px-4 py-3 w-24 align-top">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 truncate">
                           {product.category}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-sm font-mono text-gray-900 w-20">
+                      <td className="px-4 py-3 text-sm font-mono text-gray-900 w-20 align-top">
                         <div className="truncate">
-                          ${product?.price ? product?.price : ""}
+                          ${product?.price ? product?.price : "N/A"}
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-sm text-gray-900 text-center w-16">
+                      <td className="px-4 py-3 text-sm text-gray-900 text-center w-16 align-top">
                         {product.quantity}
                       </td>
-                      <td className="px-4 py-3 w-20">
+                      <td className="px-4 py-3 w-20 align-top">
                         <span
                           className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium truncate ${
                             product.status === "In Stock"
@@ -328,13 +402,14 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
                           {product.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3 w-20">
+                      <td className="px-4 py-3 w-20 align-top">
                         <div className="flex items-center gap-1">
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => handleEdit(product)}
                             className="h-8 w-8 p-0"
+                            aria-label="Edit product"
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -343,6 +418,7 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
                             size="sm"
                             onClick={() => handleDelete(product)}
                             className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                            aria-label="Delete product"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -372,7 +448,7 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
               >
                 Previous
               </Button>
-              <span className="text-sm text-gray-600 px-2">
+              <span className="text-sm text-gray-600 px-2 tabular-nums">
                 {products.page} / {products.totalPages}
               </span>
               <Button
