@@ -1,94 +1,136 @@
 ```md
-# StrategyX
+# 🧠 strategyX
 
-A full-stack application for tracking daily habits and routines.
+A full-stack habit and product tracking application built with **Next.js**, **Express.js**, **TypeORM**, and **PostgreSQL**.
 
-## 🧱 Project Structure
+---
+
+## ✅ Requirements
+
+- **Node.js** ≥ 18.x
+- **PostgreSQL** ≥ 12.x
+- **npm** or **yarn**
+- Optional: Docker (for containerized Postgres)
+
+---
+
+## 📦 Project Structure
 ```
 
-root/
-├── strategyx-fe/ # Frontend (Next.js)
-├── backend/ # Backend (Node.js + Express + TypeORM)
-├── package.json # Root scripts to manage both FE and BE
-└── README.md
-
-```
+strategyX/
+├── backend/ # Express + TypeORM + PostgreSQL
+├── strategyx-fe/ # Next.js Frontend
+└── package.json # Root-level scripts and tools
 
 ---
 
 ## 🚀 Getting Started
 
-### 1. Clone the repo
-
-```
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/mitesh0807/strategyX.git
 cd strategyX
 ```
 
-### 2. Setup Environment
+### 2. Setup environment files
 
 ```bash
 npm run setupenvdev
 ```
 
-> This will copy `.env.sample` to `.env.local` for frontend and `.env` for backend.
+This will copy `.env.example` files to:
+
+- `strategyx-fe/.env.local`
+- `backend/.env`
+
+You can then update these files if needed.
 
 ---
 
-### 3. Install Dependencies
+## 🛠️ Backend Environment Configuration
 
-```bash
-npm install
+Here’s an example `.env` for the **backend**:
+
+```env
+# Database Configuration
+DB_TYPE=postgres
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_DATABASE=postgres
+DB_SYNCHRONIZE=false
+DB_LOGGING=true
 ```
 
 ---
 
-### 4. Start Development Servers
+## 🧱 Migrations
+
+Generate or run migrations using the following commands:
+
+```bash
+npm run migrate            # Runs all pending migrations
+npm run migrate:generate  # Generate new migration
+npm run migrate:revert    # Revert the last migration
+```
+
+Example:
+
+```bash
+npm run migrate:generate -- AddCategoryRelation
+```
+
+---
+
+## 🌱 Seeding the Database
+
+To seed your database with default users and products:
+
+```bash
+npm run seed
+```
+
+**This creates the following default users:**
+
+| Email                                             | Password       | Role  |
+| ------------------------------------------------- | -------------- | ----- |
+| [admin@example.com](mailto:admin@example.com)     | password123    | Admin |
+| [johndoe@example.com](mailto:johndoe@example.com) | securepassword | User  |
+
+Products will be associated automatically with the above users.
+
+---
+
+## 🧪 Run the App in Development
 
 ```bash
 npm run dev
 ```
 
-- Frontend: [http://localhost:3000](http://localhost:3000)
-- Backend: [http://localhost:5000/api](http://localhost:5000/api) (configurable via `.env`)
+This will start both:
+
+- Frontend (`strategyx-fe`) on `http://localhost:3000`
+- Backend (`backend`) on `http://localhost:5000`
 
 ---
 
-## 🏗 Build for Production
+## 📦 Build & Start in Production
 
 ```bash
 npm run build
+npm start
 ```
 
 ---
 
-## 📦 Deploy
+## 🤝 Contributing
 
-- Frontend: Can be deployed on platforms like **Vercel**, **Netlify**, etc.
-- Backend: Deploy on **Render**, **Railway**, **Fly.io**, or traditional servers like **Heroku**/**DigitalOcean**.
-
----
-
-## 🧰 Tech Stack
-
-### Frontend (`strategyx-fe`)
-
-- [Next.js](https://nextjs.org/)
-- [React 19](https://react.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [React Hook Form](https://react-hook-form.com/)
-- [Zod](https://zod.dev/)
-- [TanStack Query](https://tanstack.com/query/)
-
-### Backend (`backend`)
-
-- [Node.js](https://nodejs.org/)
-- [Express.js](https://expressjs.com/)
-- [TypeORM](https://typeorm.io/)
-- [PostgreSQL / MySQL / SQLite](https://typeorm.io/#/connection-options)
-- [Envalid](https://github.com/af/envalid)
-- [Winston](https://github.com/winstonjs/winston)
+PRs are welcome! Please ensure your code is clean and tested.
 
 ---
+
+## 📄 License
+
+MIT © [Mitesh Savaliya](https://github.com/mitesh0807)
