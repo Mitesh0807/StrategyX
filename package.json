@@ -1,0 +1,29 @@
+{
+  "name": "strategyx",
+  "version": "1.0.0",
+  "description": "A full-stack application for tracking daily habits and routines.",
+  "main": "index.js",
+  "scripts": {
+    "setupenvdev": "cd strategyx-fe && shx cp .env.example .env.local && cd ../backend && shx cp .env.example .env",
+    "client": "cd strategyx-fe && npm run dev",
+    "server": "cd backend && npm run dev",
+    "postinstall": "cd strategyx-fe && npm install --force && cd ../backend && npm install",
+    "dev": "concurrently \"npm run client\" \"npm run server\"",
+    "start": "npm run start:client && npm run start:server",
+    "start:client": "cd strategyx-fe && npm run start",
+    "start:server": "cd backend && npm run start",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "cd strategyx-fe && npm run build",
+    "build:server": "cd backend && npm run build",
+    "migrate": "cd backend && npm run migration:run",
+    "migrate:generate": "cd backend && npm run migration:generate",
+    "migrate:revert": "cd backend && npm run migration:revert",
+    "seed": "cd backend && npm run seed"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.1",
+    "shx": "^0.4.0"
+  }
+}
