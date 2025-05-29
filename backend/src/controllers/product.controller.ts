@@ -23,12 +23,14 @@ export class ProductController extends BaseController {
         "X-Current-Page": result.page.toString(),
         "X-Per-Page": result.limit.toString(),
       });
-      this.handleSuccess(
-        res,
-        result.items,
-        "Products retrieved successfully",
-        200,
-      );
+      const data = {
+        data: result.items,
+        total: result.total,
+        page: result.page,
+        limit: result.limit,
+        totalPages: result.totalPages,
+      };
+      this.handleSuccess(res, data, "Products retrieved successfully", 200);
     } catch (error) {
       this.handleError(res, error, "Failed to retrieve products");
     }
