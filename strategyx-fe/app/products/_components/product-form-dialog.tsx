@@ -1,7 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
+import { Loader2, Plus, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -53,6 +53,9 @@ export function ProductFormDialog({
   const updateProductMutation = useUpdateProduct();
   const { data: categoriesResponse } = useCategories();
 
+  const [isAddingCustomCategory, setIsAddingCustomCategory] = useState(false);
+  const [customCategory, setCustomCategory] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -65,7 +68,10 @@ export function ProductFormDialog({
   });
 
   const categories = categoriesResponse?.data || [];
-  const categoryOptions = categories.map((cat) => ({ value: cat, label: cat }));
+  const categoryOptions = [
+    ...categories.map((cat) => ({ value: cat, label: cat })),
+    { value: "__add_custom__", label: "➕ Add Custom Category" },
+  ];
 
   useEffect(() => {
     if (open) {
@@ -86,6 +92,9 @@ export function ProductFormDialog({
           quantity: "",
         });
       }
+
+      setIsAddingCustomCategory(false);
+      setCustomCategory("");
     }
   }, [open, product, reset]);
 
@@ -126,6 +135,38 @@ export function ProductFormDialog({
   const isLoading =
     createProductMutation.isPending || updateProductMutation.isPending;
 
+  const handleCategoryChange = (value: string) => {
+    if (value === "__add_custom__") {
+      setIsAddingCustomCategory(true);
+      setCustomCategory("");
+    } else {
+      setValue("category", value);
+      setIsAddingCustomCategory(false);
+    }
+  };
+
+  const handleCustomCategorySubmit = () => {
+    if (customCategory.trim()) {
+      setValue("category", customCategory.trim());
+      setIsAddingCustomCategory(false);
+      setCustomCategory("");
+    }
+  };
+
+  const handleCustomCategoryCancel = () => {
+    setIsAddingCustomCategory(false);
+    setCustomCategory("");
+  };
+
+  const handleCustomCategoryKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleCustomCategorySubmit();
+    } else if (e.key === "Escape") {
+      handleCustomCategoryCancel();
+    }
+  };
+
   return (
     <SimpleDialog
       open={open}
@@ -136,6 +177,7 @@ export function ProductFormDialog({
           ? "Update the product information below."
           : "Fill in the details to create a new product."
       }
+      dialogPanelClassName="max-w-5xl"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -153,13 +195,58 @@ export function ProductFormDialog({
           </div>
           <div>
             <Label htmlFor="category">Category *</Label>
-            <SimpleSelect
-              value={selectedCategory}
-              onValueChange={(value) => setValue("category", value)}
-              placeholder="Select category"
-              options={categoryOptions}
-              className={errors.category ? "border-red-500" : ""}
-            />
+            {isAddingCustomCategory ? (
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Enter custom category"
+                    value={customCategory}
+                    onChange={(e) => setCustomCategory(e.target.value)}
+                    onKeyDown={handleCustomCategoryKeyPress}
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    size="sm"
+                    onClick={handleCustomCategorySubmit}
+                    disabled={!customCategory.trim()}
+                    className="px-3"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    onClick={handleCustomCategoryCancel}
+                    className="px-3"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-500">
+                  Press Enter to add or Escape to cancel
+                </p>
+              </div>
+            ) : (
+              <>
+                <SimpleSelect
+                  value={selectedCategory}
+                  onValueChange={handleCategoryChange}
+                  placeholder="Select category"
+                  options={categoryOptions}
+                  className={errors.category ? "border-red-500" : ""}
+                />
+                {selectedCategory && selectedCategory !== "__add_custom__" && (
+                  <div className="mt-2 p-2 bg-blue-50 rounded-md border border-blue-200">
+                    <p className="text-sm text-blue-700">
+                      Selected:{" "}
+                      <span className="font-medium">{selectedCategory}</span>
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
             {errors.category && (
               <p className="text-sm text-red-600 mt-1">
                 {errors.category.message}
