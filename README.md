@@ -8,9 +8,8 @@ A full-stack habit and product tracking application built with **Next.js**, **Ex
 ## ✅ Requirements
 
 - **Node.js** ≥ 18.x
-- **PostgreSQL** ≥ 12.x
-- **npm** or **yarn**
-- Optional: Docker (for containerized Postgres)
+- **Mysql**
+- **pnpm** or **npm** or **yarn**
 
 ---
 
@@ -59,10 +58,11 @@ You can then update these files if needed.
 ## 🛠️ Backend Environment Configuration
 
 Here’s an example `.env` for the **backend**:
+Need to provide correct cred
 
 ```env
 # Database Configuration
-DB_TYPE=postgres
+DB_TYPE=mysql
 DB_HOST=localhost
 DB_PORT=5432
 DB_USERNAME=postgres
