@@ -24,6 +24,14 @@ strategyX/
 
 ---
 
+📝 Assumptions
+It's important to note the following assumptions regarding the current state of the project:
+
+Category Management: A separate, dedicated database table for categories (e.g., Category) has not been implemented yet. Category information might be handled differently (e.g., as a string field within the product entity).
+User Interface (UI): The current user interface may not exactly match any specific designs or video demonstrations that might exist. The UI is functional but could differ in appearance or layout.
+
+---
+
 ## 🚀 Getting Started
 
 ### 1. Clone the repository
