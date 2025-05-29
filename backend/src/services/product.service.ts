@@ -102,20 +102,20 @@ export class ProductService extends BaseService<Product> {
     userId: number,
   ): Promise<Product> {
     const product = await this.repository.findOne({
-      where: { id, userId },
+      where: { id },
     });
 
     if (!product) {
       throw new Error("Product not found or access denied");
     }
 
-    Object.assign(product, updateProductDto);
+    Object.assign(product, { ...updateProductDto, userId });
     return this.repository.save(product);
   }
 
   async deleteProduct(id: number, userId: number): Promise<void> {
     const product = await this.repository.findOne({
-      where: { id, userId },
+      where: { id },
     });
 
     if (!product) {
@@ -137,6 +137,6 @@ export class ProductService extends BaseService<Product> {
     name: string,
     userId: number,
   ): Promise<Product | null> {
-    return this.repository.findOneBy({ name, userId });
+    return this.repository.findOneBy({ name });
   }
 }
