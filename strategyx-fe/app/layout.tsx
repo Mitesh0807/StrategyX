@@ -1,6 +1,4 @@
-
 import { Oxanium, Source_Code_Pro } from "next/font/google";
-
 
 import { Navbar } from "@/components/navbar";
 import { Providers } from "@/components/providers";
@@ -16,7 +14,6 @@ const oxanium = Oxanium({
   display: "swap",
 });
 
-export const dynamic = "force-dynamic";
 const sourceCodePro = Source_Code_Pro({
   subsets: ["latin"],
   variable: "--font-mono",

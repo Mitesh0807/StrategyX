@@ -1,7 +1,6 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Upload, X } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
@@ -17,13 +16,15 @@ import {
   useUpdateProduct,
 } from "@/lib/hooks/use-products";
 import { useToast } from "@/lib/hooks/use-toast";
-import { type ProductFormData, productSchema } from "@/lib/validations/product";
+import {
+  type ProductFormInput,
+  productFormSchema,
+} from "@/lib/validations/product";
 
 interface SerializedProduct {
   id: number;
   productId: string;
   name: string;
-  image?: string | null;
   description: string;
   category: string;
   price: number;
@@ -59,8 +60,8 @@ export function ProductFormDialog({
     reset,
     setValue,
     watch,
-  } = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
+  } = useForm<ProductFormInput>({
+    resolver: zodResolver(productFormSchema),
   });
 
   const categories = categoriesResponse?.data || [];
@@ -73,33 +74,38 @@ export function ProductFormDialog({
           name: product.name,
           description: product.description,
           category: product.category,
-          price: product.price,
-          quantity: product.quantity,
-          image: null,
+          price: product.price.toString(),
+          quantity: product.quantity.toString(),
         });
       } else {
         reset({
           name: "",
           description: "",
           category: "",
-          price: 0,
-          quantity: 0,
-          image: null,
+          price: "",
+          quantity: "",
         });
       }
     }
   }, [open, product, reset]);
 
-  const onSubmit = async (data: ProductFormData) => {
+  const onSubmit = async (data: ProductFormInput) => {
+    productFormSchema.parse(data);
+
     try {
+      const validatedData = productFormSchema.parse(data);
+
       if (product) {
-        await updateProductMutation.mutateAsync({ ...data, id: product.id });
+        await updateProductMutation.mutateAsync({
+          ...validatedData,
+          id: product.id,
+        });
         toast({
           title: "Success",
           description: "Product updated successfully",
         });
       } else {
-        await createProductMutation.mutateAsync(data);
+        await createProductMutation.mutateAsync(validatedData);
         toast({
           title: "Success",
           description: "Product created successfully",
@@ -117,7 +123,6 @@ export function ProductFormDialog({
   };
 
   const selectedCategory = watch("category");
-  const selectedImage = watch("image");
   const isLoading =
     createProductMutation.isPending || updateProductMutation.isPending;
 
@@ -188,7 +193,7 @@ export function ProductFormDialog({
               step="0.01"
               min="0"
               placeholder="0.00"
-              {...register("price", { valueAsNumber: true })}
+              {...register("price")}
               className={errors.price ? "border-red-500" : ""}
             />
             {errors.price && (
@@ -204,7 +209,7 @@ export function ProductFormDialog({
               type="number"
               min="0"
               placeholder="0"
-              {...register("quantity", { valueAsNumber: true })}
+              {...register("quantity")}
               className={errors.quantity ? "border-red-500" : ""}
             />
             {errors.quantity && (
@@ -213,37 +218,6 @@ export function ProductFormDialog({
               </p>
             )}
           </div>
-        </div>
-
-        <div>
-          <Label htmlFor="image">Product Image (Optional)</Label>
-          <div className="flex items-center gap-2">
-            <Input
-              id="image"
-              type="file"
-              accept="image/*"
-              {...register("image")}
-              className="flex-1"
-            />
-            <Upload className="h-4 w-4 text-gray-400" />
-          </div>
-          {selectedImage && (
-            <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
-              <span>Selected: {selectedImage.name}</span>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={() => setValue("image", null)}
-                className="h-auto p-1"
-              >
-                <X className="h-3 w-3" />
-              </Button>
-            </div>
-          )}
-          {errors.image && (
-            <p className="text-sm text-red-600 mt-1">{errors.image.message}</p>
-          )}
         </div>
 
         <div className="flex justify-end gap-2 pt-4">
