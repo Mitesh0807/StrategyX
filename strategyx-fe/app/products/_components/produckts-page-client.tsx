@@ -130,7 +130,7 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
         </div>
 
         <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
             <div>
               <label
                 htmlFor="product-id"
@@ -191,6 +191,42 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
                 options={statusOptions}
               />
             </div>
+            <div>
+              <label
+                htmlFor="min-price"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Min Price
+              </label>
+              <Input
+                type="number"
+                placeholder="Min price..."
+                value={filters.minPrice}
+                onChange={(e) =>
+                  setFilters({ minPrice: e.target.value, page: 1 })
+                }
+                min="0"
+                step="0.01"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="max-price"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Max Price
+              </label>
+              <Input
+                type="number"
+                placeholder="Max price..."
+                value={filters.maxPrice}
+                onChange={(e) =>
+                  setFilters({ maxPrice: e.target.value, page: 1 })
+                }
+                min="0"
+                step="0.01"
+              />
+            </div>
           </div>
         </div>
 
@@ -218,9 +254,6 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 w-32">
                       Name
                     </th>
-                    {/* <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 w-16"> */}
-                    {/*   Image */}
-                    {/* </th> */}
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 w-80">
                       Description
                     </th>
@@ -254,21 +287,6 @@ export function ProductsPageClient({ initialData }: ProductsPageClientProps) {
                           {product.name}
                         </div>
                       </td>
-                      {/* <td className="px-4 py-3 w-16"> */}
-                      {/*   {product.image ? ( */}
-                      {/*     <Image */}
-                      {/*       src={product.image || "/placeholder.svg"} */}
-                      {/*       alt={product.name} */}
-                      {/*       width={40} */}
-                      {/*       height={40} */}
-                      {/*       className="rounded-md object-cover border flex-shrink-0" */}
-                      {/*     /> */}
-                      {/*   ) : ( */}
-                      {/*     <div className="w-10 h-10 rounded-md border-2 border-dashed border-gray-300 flex items-center justify-center flex-shrink-0"> */}
-                      {/*       <Package className="h-4 w-4 text-gray-400" /> */}
-                      {/*     </div> */}
-                      {/*   )} */}
-                      {/* </td> */}
                       <td className="px-4 py-3 text-sm text-gray-600 w-80">
                         <div
                           className="break-words overflow-hidden"
