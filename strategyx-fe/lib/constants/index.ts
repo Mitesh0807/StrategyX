@@ -9,7 +9,7 @@ export const API_ENDPOINTS = {
     BASE: "/products",
     BY_ID: (id: number) => `/products/${id}`,
   },
-  CATEGORIES: "/prodcuts/categories",
+  CATEGORIES: "/products/categories",
 } as const;
 
 export const QUERY_KEYS = {
@@ -18,7 +18,7 @@ export const QUERY_KEYS = {
   },
   PRODUCTS: {
     ALL: ["products"],
-    LIST: (filters: any) => ["products", filters],
+    LIST: (filters: unknown) => ["products", filters],
     BY_ID: (id: number) => ["products", id],
   },
   CATEGORIES: ["categories"],

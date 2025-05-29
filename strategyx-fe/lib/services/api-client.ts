@@ -1,4 +1,4 @@
-import type { ApiResponse } from "@/lib/types/api";
+import type { ApiResponse } from "@/lib/types";
 
 class ApiClient {
   private baseURL: string;
@@ -22,6 +22,7 @@ class ApiClient {
       credentials: "include",
       ...options,
     };
+
     try {
       const response = await fetch(url, config);
       const data = await response.json();
@@ -41,7 +42,7 @@ class ApiClient {
     return this.request<T>(endpoint, { method: "GET" });
   }
 
-  async post<T>(endpoint: string, data?: any): Promise<ApiResponse<T>> {
+  async post<T>(endpoint: string, data?: unknown): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: "POST",
       body: data instanceof FormData ? data : JSON.stringify(data),
@@ -50,7 +51,7 @@ class ApiClient {
     });
   }
 
-  async put<T>(endpoint: string, data?: any): Promise<ApiResponse<T>> {
+  async put<T>(endpoint: string, data?: unknown): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: "PUT",
       body: data instanceof FormData ? data : JSON.stringify(data),

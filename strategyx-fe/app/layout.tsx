@@ -1,17 +1,22 @@
-import type React from "react";
-import type { Metadata } from "next";
+
 import { Oxanium, Source_Code_Pro } from "next/font/google";
-import "./globals.css";
-import { Providers } from "@/components/providers";
+
+
 import { Navbar } from "@/components/navbar";
+import { Providers } from "@/components/providers";
 import { Toaster } from "@/components/ui/toaster";
 
+import type { Metadata } from "next";
+import type React from "react";
+
+import "./globals.css";
 const oxanium = Oxanium({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
+export const dynamic = "force-dynamic";
 const sourceCodePro = Source_Code_Pro({
   subsets: ["latin"],
   variable: "--font-mono",

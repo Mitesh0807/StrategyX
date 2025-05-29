@@ -1,11 +1,15 @@
-import { apiClient } from "./api-client";
 import { API_ENDPOINTS } from "@/lib/constants";
-import type { User, LoginCredentials, SignupData } from "@/lib/types/auth";
-import type { ApiResponse } from "@/lib/types/api";
+import type {
+  ApiResponse,
+  LoginCredentials,
+  SignupData,
+  User,
+} from "@/lib/types";
+
+import { apiClient } from "./api-client";
 
 export class AuthService {
   async login(credentials: LoginCredentials): Promise<ApiResponse<User>> {
-    console.log(credentials, "credentials");
     return apiClient.post<User>(API_ENDPOINTS.AUTH.LOGIN, credentials);
   }
 

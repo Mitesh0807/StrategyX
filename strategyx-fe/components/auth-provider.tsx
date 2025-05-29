@@ -1,11 +1,13 @@
 "use client";
 
-import type React from "react";
-import { createContext, useContext } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { createContext, useContext } from "react";
+
 import { QUERY_KEYS } from "@/lib/constants";
 import { authService } from "@/lib/services/auth-service";
 import { LoginCredentials, SignupData, User } from "@/lib/types/auth";
+
+import type React from "react";
 
 interface AuthContextType {
   user: User | null;
@@ -26,22 +28,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     queryFn: async () => {
       try {
         const response = await authService.getCurrentUser();
+
         return response.data;
-      } catch (error) {
+      } catch {
         return null;
       }
     },
     retry: false,
-    staleTime: 5 * 60 * 1000, 
+    staleTime: 5 * 60 * 1000,
   });
 
   const login = async (credentials: LoginCredentials) => {
     const response = await authService.login(credentials);
+
     queryClient.setQueryData(QUERY_KEYS.AUTH.ME, response.data);
   };
 
   const signup = async (userData: SignupData) => {
     const response = await authService.signup(userData);
+
     queryClient.setQueryData(QUERY_KEYS.AUTH.ME, response.data);
   };
 
@@ -60,15 +65,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     logout,
   };
 
- return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  ); 
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
   const context = useContext(AuthContext);
+
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
   }

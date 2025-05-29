@@ -1,13 +1,17 @@
 "use client";
 
-import Link from "next/link";
-import { useAuth } from "./auth-provider";
-import { Button } from "@/components/ui/button";
 import { LogOut, Package } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/lib/constants";
+
+import { useAuth } from "./auth-provider";
 
 export function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
+  const router = useRouter();
 
   if (!isAuthenticated) {
     return null;
@@ -16,7 +20,9 @@ export function Navbar() {
   const handleLogout = async () => {
     try {
       await logout();
+      router.push(ROUTES.HOME);
     } catch (error) {
+      router.push(ROUTES.HOME);
       console.error("Logout error:", error);
     }
   };

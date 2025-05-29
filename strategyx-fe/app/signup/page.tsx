@@ -1,14 +1,13 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+
 import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -16,10 +15,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
-import { signupSchema, type SignupFormData } from "@/lib/validations/auth";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { ROUTES } from "@/lib/constants";
+import { useToast } from "@/lib/hooks/use-toast";
+import { type SignupFormData, signupSchema } from "@/lib/validations/auth";
 
 export default function SignupPage() {
   const { signup } = useAuth();
