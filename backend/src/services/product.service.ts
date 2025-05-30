@@ -7,7 +7,7 @@ import {
 } from "@/dto/product.dto";
 import { BaseService } from "./base.service";
 import { FindManyOptions, Like, Between } from "typeorm";
-import { logger } from "@/utils/logger.util";
+import { randomBytes } from "crypto";
 
 export interface PaginatedResult<T> {
   items: T[];
@@ -26,8 +26,8 @@ export class ProductService extends BaseService<Product> {
     createProductDto: CreateProductDto,
     userId: number,
   ): Promise<Product> {
-    const productCount = await this.repository.count();
-    const productId = `PRD${String(productCount + 1).padStart(3, "0")}`;
+    const randomId = randomBytes(4).readUInt32BE(0).toString(36).toUpperCase();
+    const productId = `PRD${randomId.padStart(6, "0")}`;
 
     const product = this.repository.create({
       ...createProductDto,
