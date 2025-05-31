@@ -18,8 +18,9 @@ export interface ProductFilters {
   name?: string;
   category?: string;
   status?: string;
-  minPrice?: number;
-  maxPrice?: number;
+  minPrice?: number | string;
+  maxPrice?: number | string;
+  page?: number | string;
 }
 
 export interface CreateProductData {

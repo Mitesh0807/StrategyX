@@ -6,7 +6,7 @@ import { serverApiClient } from "@/lib/services/server-api-client";
 import type { ProductFilters } from "@/lib/types";
 import { SerializedProductsResponse, SerializedUser } from "@/lib/utils";
 
-import { ProductsPageClient } from "./_components/produckts-page-client";
+import { ProductsPageClient } from "./_components/product-page-client";
 interface ProductsPageProps {
   searchParams: Promise<{
     page?: string;
